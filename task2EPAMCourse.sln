@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30225.117
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "task2EPAMCourse", "task2EPAMCourse\task2EPAMCourse.csproj", "{A93AB004-E4AD-48B9-9A4E-665E87F93482}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A93AB004-E4AD-48B9-9A4E-665E87F93482}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A93AB004-E4AD-48B9-9A4E-665E87F93482}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A93AB004-E4AD-48B9-9A4E-665E87F93482}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A93AB004-E4AD-48B9-9A4E-665E87F93482}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {39FFC66F-5570-4CC9-B69B-988F92B0F763}
+	EndGlobalSection
+EndGlobal
