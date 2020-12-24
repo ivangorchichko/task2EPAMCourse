@@ -4,8 +4,8 @@ using System.Text;
 
 namespace task2EPAMCourse.Contracts
 {
-    public interface IWord : ISentenceItems
+    public interface ISentenceItems
     {
-        string Chars { get; set; }
+        string GetValue();
     }
 }

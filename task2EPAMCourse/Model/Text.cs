@@ -5,13 +5,23 @@ using task2EPAMCourse.Contracts;
 
 namespace task2EPAMCourse.Model
 {
-    internal class Text
+    internal class Text : IText
     {
-        public ICollection<ISentance> Sentances { get; }
+        public IList<ISentence> Sentences { get; }
 
         public Text()
         {
-            Sentances = new List<ISentance>();
+            Sentences = new List<ISentence>();
+        }
+
+        public void Add(ISentence sentence)
+        {
+            Sentences.Add(sentence);
+        }
+
+        public ICollection<ISentence> GetSentences()
+        {
+            return Sentences;
         }
     }
 }

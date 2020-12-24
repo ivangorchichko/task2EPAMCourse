@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using task2EPAMCourse.Model;
 
 namespace task2EPAMCourse.Contracts
 {
-    public interface IWord : ISentenceItems
+    public interface ISentence
     {
-        string Chars { get; set; }
+        void AddItem(ISentenceItems sentenceItems);
     }
 }

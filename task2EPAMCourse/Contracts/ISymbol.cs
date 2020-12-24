@@ -4,7 +4,7 @@ using System.Text;
 
 namespace task2EPAMCourse.Contracts
 {
-    public interface IWord : ISentenceItems
+    interface ISymbol : ISentenceItems
     {
         string Chars { get; set; }
     }

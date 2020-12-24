@@ -4,7 +4,8 @@ using System.Text;
 
 namespace task2EPAMCourse.Contracts
 {
-    public interface ISentance
+    public interface ISeparator 
     {
+      //  protected string[] GetSeparator();
     }
 }
