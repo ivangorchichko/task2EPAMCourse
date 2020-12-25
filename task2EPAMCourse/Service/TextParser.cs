@@ -25,6 +25,7 @@ namespace task2EPAMCourse.Service
                     string result = string.Join(" ", line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
                     string[] lineWords = result.Split(" ");
                     bool isAdded = false;
+                    
 
                     for (int i = 0; i < lineWords.Length; i++)
                     {
@@ -34,24 +35,66 @@ namespace task2EPAMCourse.Service
                             {
                                 if (lineWords[i] != wordSeparator)
                                 {
+                                    if (lineWords[i].IndexOf(wordSeparator) == 0 && lineWords[i].LastIndexOf(wordSeparator) == lineWords[i].Length - 1)
+                                    {
+                                        sentanceItems.Add(new Symbol(wordSeparator));
+                                        sentanceItems.Add(new Word(lineWords[i].Trim(wordSeparator[0])));
+                                        sentanceItems.Add(new Symbol(wordSeparator));
+                                        isAdded = true;
+                                        break;
+                                    }
+                                    else
                                     if (lineWords[i].IndexOf(wordSeparator) == 0)
                                     {
                                         sentanceItems.Add(new Symbol(wordSeparator));
                                         sentanceItems.Add(new Word(lineWords[i].Trim(wordSeparator[0])));
-
+                                        isAdded = true;
+                                        break;
                                     }
                                     else
                                     {
-                                        lineWords[i].Remove(lineWords[i].IndexOf(wordSeparator), 1);
                                         sentanceItems.Add(new Word(lineWords[i].Trim(wordSeparator[0])));
                                         sentanceItems.Add(new Symbol(wordSeparator));
+                                        isAdded = true;
+                                        break;
                                     }
+
                                 }
                                 else
                                 {
                                     sentanceItems.Add(new Symbol(wordSeparator));
+                                    isAdded = true;
+                                    break;
                                 }
-                                isAdded = true;
+
+                            }
+                            else
+                            {
+                                foreach (var sentenceSeparator in sentenceSeparator.GetSeparator())
+                                {
+                                    if (lineWords[i].Contains(sentenceSeparator))
+                                    {
+                                        foreach (var largeSentenceSeparator in largeSentenceSeparator.GetSeparator())
+                                        {
+                                            if (lineWords[i].Contains(largeSentenceSeparator))
+                                            {
+                                                lineWords[i] = lineWords[i].Remove(lineWords[i].IndexOf(largeSentenceSeparator),
+                                                    largeSentenceSeparator.Length);
+                                                sentanceItems.Add(new Word(lineWords[i]));
+                                                sentanceItems.Add(new Symbol(largeSentenceSeparator));
+                                                isAdded = true;
+                                                break;
+                                            }
+                                        }
+                                        if (isAdded == false)
+                                        {
+                                            sentanceItems.Add(new Word(lineWords[i].Trim(sentenceSeparator[0])));
+                                            sentanceItems.Add(new Symbol(sentenceSeparator));
+                                            isAdded = true;
+                                        }
+                                        break;
+                                    }
+                                }
                             }
                         }
                         if (isAdded == false)
@@ -74,6 +117,7 @@ namespace task2EPAMCourse.Service
                 {
                     if (sentenceItems[i].GetValue().Contains(sentenceSeparator.GetSeparator()[j]))
                     {
+
                         ISentence sentence = new Sentence();
                         for (int count = lastWord; count <= i; count++)
                         {
@@ -81,6 +125,8 @@ namespace task2EPAMCourse.Service
                         }
                         text.Add(sentence);
                         lastWord = i + 1;
+                        j = sentenceSeparator.GetSeparator().Length - 1;
+
                     }
                 }
             }

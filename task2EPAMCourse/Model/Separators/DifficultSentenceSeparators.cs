@@ -6,7 +6,7 @@ namespace task2EPAMCourse.Model.Separators
 {
     class DifficultSentenceSeparators : Separator
     {
-        private string[] _largeSentenceSeparators = new string[] { "...", "?!" };
+        private string[] _largeSentenceSeparators = new string[] { "...", "?!", "!?" };
 
         public override string[] GetSeparator()
         {
