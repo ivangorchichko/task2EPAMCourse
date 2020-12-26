@@ -11,5 +11,6 @@ namespace task2EPAMCourse.Enums
         PrintWordsFixedLarge,
         DeleteWordsFixedLarge,
         ReplaceWordsFixedLarge,
+        SaveObjectModel,
     }
 }

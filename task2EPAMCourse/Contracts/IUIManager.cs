@@ -6,5 +6,19 @@ namespace task2EPAMCourse.Contracts
 {
     public interface IUIManager
     {
+        void ShowOperationsMenu();
+
+        int GetWordsCount();
+
+        void PrintFindingWords(IList<ISentenceItems> words);
+
+        void PrintModernText(List<string> textSentence);
+
+        string GetSubstring();
+
+        void PrintModernSentence(ISentence sentence);
+
+        ISentence GetSelectedSentence(IText text);
+
     }
 }

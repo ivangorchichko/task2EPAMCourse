@@ -17,11 +17,13 @@ namespace task2EPAMCourse.Model
         {
 
         }
-
-
         public void AddItem(ISentenceItems item)
         {
             SentenceItems.Add(item);
+        }
+        public IList<ISentenceItems> GetSentenceItems()
+        {
+            return SentenceItems;
         }
         //public void AddItem(Word word)
         //{

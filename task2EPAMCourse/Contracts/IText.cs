@@ -8,6 +8,6 @@ namespace task2EPAMCourse.Contracts
     {
         void Add(ISentence sentence);
 
-        ICollection<ISentence> GetSentences();
+        IList<ISentence> GetSentences();
     }
 }

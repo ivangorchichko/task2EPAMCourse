@@ -6,6 +6,6 @@ namespace task2EPAMCourse.Contracts
 {
     public interface IWord : ISentenceItems
     {
-        string Chars { get; set; }
+        
     }
 }

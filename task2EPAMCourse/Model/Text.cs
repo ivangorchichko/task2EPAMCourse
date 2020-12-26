@@ -19,7 +19,7 @@ namespace task2EPAMCourse.Model
             Sentences.Add(sentence);
         }
 
-        public ICollection<ISentence> GetSentences()
+        public IList<ISentence> GetSentences()
         {
             return Sentences;
         }

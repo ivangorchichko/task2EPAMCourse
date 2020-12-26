@@ -10,10 +10,11 @@ namespace task2EPAMCourse.Service
 {
     public class TextParser : IParser
     {
-        private IFileService file = new FileService();
-        private Separator separators = new WordSeparators();
-        private Separator sentenceSeparator = new SentenceSeparators();
-        private Separator largeSentenceSeparator = new DifficultSentenceSeparators();
+        private readonly IFileService file = new FileService();
+        private readonly Separator separators = new WordSeparators();
+        private readonly Separator sentenceSeparator = new SentenceSeparators();
+        private readonly Separator largeSentenceSeparator = new DifficultSentenceSeparators();
+
         public IList<ISentenceItems> ParseText(IList<ISentenceItems> sentanceItems)
         {
             using (var streamReader = file.GetReader())

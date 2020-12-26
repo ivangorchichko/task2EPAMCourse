@@ -9,5 +9,7 @@ namespace task2EPAMCourse.Contracts
     {
         StreamReader GetReader();
 
+        void SaveFile(IText text, ITextService textService);
+
     }
 }
