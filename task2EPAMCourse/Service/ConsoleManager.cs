@@ -33,7 +33,7 @@ namespace task2EPAMCourse.Service
             Console.WriteLine();
         }
 
-        public void PrintModernText(List<string> textSentences)
+        public void PrintModernText(IList<string> textSentences)
         {
             foreach (var sentence in textSentences)
             {
@@ -53,6 +53,7 @@ namespace task2EPAMCourse.Service
             {
                 Console.Write(items.GetValue() + " ");
             }
+            Console.WriteLine();
         }
 
         public ISentence GetSelectedSentence(IText text)

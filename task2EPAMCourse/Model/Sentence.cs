@@ -7,11 +7,6 @@ namespace task2EPAMCourse.Model
 {
     class Sentence : ISentence
     {
-        //public IList<Word> Words { get; } = new List<Word>();
-
-        //public IList<Symbol> Separators { get; } = new List<Symbol>();
-        //  public IList<ISentenceItems> sentence { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-
         public IList<ISentenceItems> SentenceItems { get; } = new List<ISentenceItems>();
         public Sentence()
         {
@@ -25,13 +20,5 @@ namespace task2EPAMCourse.Model
         {
             return SentenceItems;
         }
-        //public void AddItem(Word word)
-        //{
-        //    Words.Add(word);
-        //}
-        //public void AddItem(Symbol separator)
-        //{
-        //    Separators.Add(separator);
-        //}
     }
 }

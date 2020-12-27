@@ -8,11 +8,11 @@ namespace task2EPAMCourse.Contracts
     {
         bool TryParseEnum<T>(out T operation) where T : struct, IConvertible;
 
-        IList<ISentenceItems> OrderSentenceInText(IText text);
+        IText OrderSentenceInText(IText text);
 
         IList<ISentenceItems> GetWordsInQuestionSentence(IText text, int wordCount);
 
-        List<string> CreateModelText(IText text);
+        IList<string> CreateModelText(IText text);
 
         IText DeleteWordsFromText(IText text, int wordCount);
 

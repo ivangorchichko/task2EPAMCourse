@@ -8,11 +8,11 @@ namespace task2EPAMCourse.Model
 {
     public class Word : IWord
     {
-        private Symbol _symbols;
+        private SymbolSeparator _symbols;
 
         public Word(string word)
         {
-            _symbols = new Symbol(word);
+            _symbols = new SymbolSeparator(word);
         }
 
         public string Chars

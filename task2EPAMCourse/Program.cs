@@ -44,7 +44,7 @@ namespace task2EPAMCourse
                 {
                     case Points.ViewOrderedSentences:
                         {
-                            _textService.OrderSentenceInText(_text);
+                           _uIManager.PrintModernText(_textService.CreateModelText(_textService.OrderSentenceInText(_text)));
                             break;
                         }
                     case Points.PrintWordsFixedLarge:

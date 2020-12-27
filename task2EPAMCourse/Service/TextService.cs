@@ -13,11 +13,11 @@ namespace task2EPAMCourse.Service
         {
             IList<ISentence> questionSentence = new List<ISentence>();
 
-            foreach(var sentence in text.GetSentences())
+            foreach (var sentence in text.GetSentences())
             {
-                foreach(var sentenceItem in sentence.GetSentenceItems())
+                foreach (var sentenceItem in sentence.GetSentenceItems())
                 {
-                    if(sentenceItem.GetValue().Contains("?"))
+                    if (sentenceItem.GetValue().Contains("?"))
                     {
                         questionSentence.Add(sentence);
                     }
@@ -28,30 +28,66 @@ namespace task2EPAMCourse.Service
         private IList<ISentenceItems> GetWordsFixedLarge(IList<ISentence> questionSentence, int wordCount)
         {
             IList<ISentenceItems> words = new List<ISentenceItems>();
-            for(int i=0; i<questionSentence.Count; i++)
+            for (int i = 0; i < questionSentence.Count; i++)
             {
-                for(int j=0; j<questionSentence[i].GetSentenceItems().Count; j++)
+                for (int j = 0; j < questionSentence[i].GetSentenceItems().Count; j++)
                 {
-                    if(questionSentence[i].GetSentenceItems()[j].GetValue().Length == wordCount 
-                        && questionSentence[i].GetSentenceItems()[j].GetType() != typeof(Symbol))
+                    if (questionSentence[i].GetSentenceItems()[j].GetValue().Length == wordCount
+                        && questionSentence[i].GetSentenceItems()[j].GetType() != typeof(SymbolSeparator)
+                        && IsAdded(words, questionSentence[i].GetSentenceItems()[j]))
                     {
                         words.Add(questionSentence[i].GetSentenceItems()[j]);
                     }
-                }                
+                }
             }
             return words;
         }
 
-        public IList<ISentenceItems> OrderSentenceInText(IText text)
+        private bool IsAdded(IList<ISentenceItems> words, ISentenceItems item)
         {
-            IList<ISentenceItems> orderedText = new List<ISentenceItems>();
-            
-            for(int i=0; i< text.GetSentences().Count; i++)
+            foreach (var word in words)
             {
-               var item = text.GetSentences()[i].GetSentenceItems()[i].GetValue();
+                if (word.GetValue() == item.GetValue())
+                {
+                    return false;
+                }
             }
-                
-            return orderedText;
+            return true;
+        }
+        public IText OrderSentenceInText(IText text)
+        {
+            IText modernText = new Text(text.GetSentences());
+            List<int> sentenceCount = new List<int>();
+            int count = 0;
+            //var sortered = modernText.GetSentences().OrderBy(x => x.GetSentenceItems().ToList().Count()).ToList();
+            for (int i = 0; i < modernText.GetSentences().Count; i++)
+            {
+                for (int j = 0; j < modernText.GetSentences()[i].GetSentenceItems().Count; j++)
+                {
+                    if (modernText.GetSentences()[i].GetSentenceItems()[j].GetType() != typeof(SymbolSeparator))
+                    {
+                        count++;
+                    }
+                }
+                sentenceCount.Add(count);
+                count = 0;
+            }
+            for (int i = 0; i < modernText.GetSentences().Count; i++)
+            {
+                for (int j = i + 1; j < modernText.GetSentences().Count; j++)
+                {
+                    if (sentenceCount[i] > sentenceCount[j])
+                    {
+                        var temp = modernText.GetSentences()[i];
+                        modernText.GetSentences()[i] = modernText.GetSentences()[j];
+                        modernText.GetSentences()[j] = temp;
+                        var countTemp = sentenceCount[i];
+                        sentenceCount[i] = sentenceCount[j];
+                        sentenceCount[j] = countTemp;
+                    }
+                }
+            }
+            return modernText;
         }
 
         public bool TryParseEnum<T>(out T operation) where T : struct, IConvertible
@@ -68,15 +104,15 @@ namespace task2EPAMCourse.Service
                 return false;
             }
         }
-        public List<string> CreateModelText(IText text)
+        public IList<string> CreateModelText(IText text)
         {
-            List<string> sentenceFirstStateList = new List<string>();
+            IList<string> sentenceFirstStateList = new List<string>();
             string sentenceFirstState = "";
             for (int i = 0; i < text.GetSentences().Count; i++)
             {
                 for (int j = 0; j < text.GetSentences()[i].GetSentenceItems().Count; j++)
                 {
-                    if (text.GetSentences()[i].GetSentenceItems()[j].GetType() == typeof(Symbol))
+                    if (text.GetSentences()[i].GetSentenceItems()[j].GetType() == typeof(SymbolSeparator))
                     {
                         sentenceFirstState += text.GetSentences()[i].GetSentenceItems()[j].GetValue() + " ";
                     }
@@ -98,8 +134,9 @@ namespace task2EPAMCourse.Service
             {
                 for (int j = 0; j < modernText.GetSentences()[i].GetSentenceItems().Count; j++)
                 {
-                    if (modernText.GetSentences()[i].GetSentenceItems()[j].GetValue().Length == wordCount 
-                        && modernText.GetSentences()[i].GetSentenceItems()[j].GetType() != typeof(Symbol))
+                    if (modernText.GetSentences()[i].GetSentenceItems()[j].GetValue().Length == wordCount
+                        && modernText.GetSentences()[i].GetSentenceItems()[j].GetType() != typeof(SymbolSeparator)
+                        && IsStartedConsonantLetter(modernText.GetSentences()[i].GetSentenceItems()[j]) == true)
                     {
                         modernText.GetSentences()[i].GetSentenceItems().Remove(modernText.GetSentences()[i].GetSentenceItems()[j]);
                         j--;
@@ -108,13 +145,26 @@ namespace task2EPAMCourse.Service
             }
             return modernText;
         }
+        private bool IsStartedConsonantLetter(ISentenceItems word)
+        {
+            char[] consonant = { 'q', 'w', 'r', 't', 'p', 's', 'd', 'f',
+                'g', 'h', 'j', 'k', 'l', 'z', 'x', 'c', 'v', 'b', 'n', 'm'};
+            for (int i = 0; i < consonant.Length; i++)
+            {
+                if (word.GetValue().ToLower()[0] == consonant[i])
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
         public ISentence ReplaceWordsOnSubstring(ISentence sentence, int wordCount, string substring)
         {
             ISentence modernSentence = sentence;
-            foreach(var items in modernSentence.GetSentenceItems())
+            foreach (var items in modernSentence.GetSentenceItems())
             {
-                if(items.GetValue().Length == wordCount)
+                if (items.GetValue().Length == wordCount)
                 {
                     items.Chars = substring;
                 }

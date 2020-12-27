@@ -7,11 +7,17 @@ namespace task2EPAMCourse.Model
 {
     internal class Text : IText
     {
+
         public IList<ISentence> Sentences { get; }
 
         public Text()
         {
             Sentences = new List<ISentence>();
+        }
+
+        public Text(IList<ISentence> text)
+        {
+            Sentences = text;
         }
 
         public void Add(ISentence sentence)

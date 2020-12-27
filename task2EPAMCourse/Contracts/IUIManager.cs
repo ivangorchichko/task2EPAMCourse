@@ -12,7 +12,7 @@ namespace task2EPAMCourse.Contracts
 
         void PrintFindingWords(IList<ISentenceItems> words);
 
-        void PrintModernText(List<string> textSentence);
+        void PrintModernText(IList<string> textSentence);
 
         string GetSubstring();
 
