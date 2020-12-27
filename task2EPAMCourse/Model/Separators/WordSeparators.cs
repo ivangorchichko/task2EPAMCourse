@@ -7,7 +7,7 @@ namespace task2EPAMCourse.Model.Separators
 {
     internal class WordSeparators : Separator
     {
-        private string[] _wordSeparators = new string[] { ",", "-", ";", "'", ":", "\"" };
+        private string[] _wordSeparators = new string[] { ",", "-", ";", "'", ":", "\"", "[", "]", "{", "}" };
 
         public override string[] GetSeparator()
         {

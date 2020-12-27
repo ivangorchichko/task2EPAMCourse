@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using task2EPAMCourse.Contracts;
 
 namespace task2EPAMCourse.Service
 {
-    class ConsoleManager : IUIManager
+    public class ConsoleManager : IUIManager
     {
         public void ShowOperationsMenu()
         {
@@ -24,7 +23,7 @@ namespace task2EPAMCourse.Service
             return wordCount;
         }
 
-        public void PrintFindingWords(IList<ISentenceItems> words)
+        public void PrintFindingWords(IEnumerable<ISentenceItems> words)
         {
             foreach (var word in words)
             {
@@ -33,7 +32,7 @@ namespace task2EPAMCourse.Service
             Console.WriteLine();
         }
 
-        public void PrintModernText(IList<string> textSentences)
+        public void PrintModernText(IEnumerable<string> textSentences)
         {
             foreach (var sentence in textSentences)
             {

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace task2EPAMCourse.Contracts
+﻿namespace task2EPAMCourse.Contracts
 {
     public interface ISentenceItems
     {

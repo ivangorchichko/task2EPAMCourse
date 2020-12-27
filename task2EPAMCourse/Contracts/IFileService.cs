@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
+﻿using System.IO;
 
 namespace task2EPAMCourse.Contracts
 {
@@ -9,7 +6,7 @@ namespace task2EPAMCourse.Contracts
     {
         StreamReader GetReader();
 
-        void SaveFile(IText text, ITextService textService);
+        void SaveFile(IText text);
 
     }
 }

@@ -5,9 +5,8 @@ using task2EPAMCourse.Contracts;
 
 namespace task2EPAMCourse.Model
 {
-    internal class Text : IText
+    public class Text : IText
     {
-
         public IList<ISentence> Sentences { get; }
 
         public Text()
@@ -17,7 +16,7 @@ namespace task2EPAMCourse.Model
 
         public Text(IList<ISentence> text)
         {
-            Sentences = text;
+            Sentences = new List<ISentence>(text);
         }
 
         public void Add(ISentence sentence)

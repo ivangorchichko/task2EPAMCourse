@@ -1,11 +1,6 @@
-﻿using System;
-using System.Linq;
-using task2EPAMCourse.Contracts;
+﻿using task2EPAMCourse.Contracts;
 using task2EPAMCourse.FileOperations;
 using task2EPAMCourse.Model;
-using System.IO;
-using System.Collections.Generic;
-using task2EPAMCourse.Model.Separators;
 using task2EPAMCourse.Service;
 using task2EPAMCourse.Enums;
 
@@ -14,11 +9,12 @@ namespace task2EPAMCourse
     class Program
     {
         private static readonly IParser _parser = new TextParser();
-        private static IList<ISentenceItems> _sentenceItems = new List<ISentenceItems>();
         private static readonly IText _text = new Text();
         private static readonly IUIManager _uIManager = new ConsoleManager();
         private static readonly ITextService _textService = new TextService();
-        private static readonly IFileService _fileService = new FileService();
+        private static readonly IFileService _fileService = new FileService(_textService);
+        private static readonly IEnumHelper _enumHelper = new ParseEnumHelper();
+
         static void Main(string[] args)
         {
             Start();
@@ -27,11 +23,10 @@ namespace task2EPAMCourse
         private static void Start()
         {
             while (true)
-            {
-                _sentenceItems = _parser.ParseText(_sentenceItems);
-                _parser.CreateSentence(_text, _sentenceItems);
+            {  
+                _parser.CreateSentence(_text);
                 _uIManager.ShowOperationsMenu();
-                if (!_textService.TryParseEnum<Points>(out var operation))
+                if (!_enumHelper.TryParseEnum<Points>(out var operation))
                 {
                     continue;
                 }
@@ -44,7 +39,7 @@ namespace task2EPAMCourse
                 {
                     case Points.ViewOrderedSentences:
                         {
-                           _uIManager.PrintModernText(_textService.CreateModelText(_textService.OrderSentenceInText(_text)));
+                           _uIManager.PrintModernText(_textService.CreateModelText(_textService.OrderByWords(_text)));
                             break;
                         }
                     case Points.PrintWordsFixedLarge:
@@ -67,10 +62,9 @@ namespace task2EPAMCourse
                         }
                     case Points.SaveObjectModel:
                         {
-                            _textService.SaveObjectModel(_text, _fileService);
+                            _fileService.SaveFile(_text);
                             break;
                         }
-                    
                 }
             }
         }

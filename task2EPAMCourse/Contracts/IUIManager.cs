@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace task2EPAMCourse.Contracts
 {
@@ -10,9 +8,9 @@ namespace task2EPAMCourse.Contracts
 
         int GetWordsCount();
 
-        void PrintFindingWords(IList<ISentenceItems> words);
+        void PrintFindingWords(IEnumerable<ISentenceItems> words);
 
-        void PrintModernText(IList<string> textSentence);
+        void PrintModernText(IEnumerable<string> textSentence);
 
         string GetSubstring();
 

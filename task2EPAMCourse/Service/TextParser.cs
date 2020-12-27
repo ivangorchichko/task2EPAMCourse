@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using task2EPAMCourse.Contracts;
 using task2EPAMCourse.FileOperations;
 using task2EPAMCourse.Model;
@@ -10,29 +10,25 @@ namespace task2EPAMCourse.Service
 {
     public class TextParser : IParser
     {
-        private readonly IFileService file = new FileService();
-        private readonly Separator separators = new WordSeparators();
-        private readonly Separator sentenceSeparator = new SentenceSeparators();
-        private readonly Separator largeSentenceSeparator = new DifficultSentenceSeparators();
+        private readonly IFileService _file = new FileService();
+        private readonly ISeparator _separators = new WordSeparators();
+        private readonly ISeparator _sentenceSeparator = new SentenceSeparators();
+        private readonly ISeparator _largeSentenceSeparator = new DifficultSentenceSeparators();
 
-        public IList<ISentenceItems> ParseText(IList<ISentenceItems> sentanceItems)
+        private IEnumerable<ISentenceItems> ParseText()
         {
-            using (var streamReader = file.GetReader())
+            using (var streamReader = _file.GetReader())
             {
                 while (!streamReader.EndOfStream)
                 {
                     string line = streamReader.ReadLine();
-                    if (line != "")
+                    if (line != String.Empty)
                     {
-                        line = line.Replace('\t', ' ');
-                        string result = string.Join(" ", line.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries));
-                        string[] lineWords = result.Split(" ");
+                        string[] lineWords = line.Replace('\t', ' ').Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                         bool isAdded = false;
-
-
                         for (int i = 0; i < lineWords.Length; i++)
                         {
-                            foreach (var wordSeparator in separators.GetSeparator())
+                            foreach (var wordSeparator in _separators.GetSeparator())
                             {
                                 if (lineWords[i].Contains(wordSeparator))
                                 {
@@ -40,24 +36,24 @@ namespace task2EPAMCourse.Service
                                     {
                                         if (lineWords[i].IndexOf(wordSeparator) == 0 && lineWords[i].LastIndexOf(wordSeparator) == lineWords[i].Length - 1)
                                         {
-                                            sentanceItems.Add(new SymbolSeparator(wordSeparator));
-                                            sentanceItems.Add(new Word(lineWords[i].Trim(wordSeparator[0])));
-                                            sentanceItems.Add(new SymbolSeparator(wordSeparator));
+                                            yield return new Symbol(wordSeparator);
+                                            yield return new Word(lineWords[i].Trim(wordSeparator[0]));
+                                            yield return new Symbol(wordSeparator);
                                             isAdded = true;
                                             break;
                                         }
                                         else
                                         if (lineWords[i].IndexOf(wordSeparator) == 0)
                                         {
-                                            sentanceItems.Add(new SymbolSeparator(wordSeparator));
-                                            sentanceItems.Add(new Word(lineWords[i].Trim(wordSeparator[0])));
+                                            yield return new Symbol(wordSeparator);
+                                            yield return new Word(lineWords[i].Trim(wordSeparator[0]));
                                             isAdded = true;
                                             break;
                                         }
                                         else
                                         {
-                                            sentanceItems.Add(new Word(lineWords[i].Trim(wordSeparator[0])));
-                                            sentanceItems.Add(new SymbolSeparator(wordSeparator));
+                                            yield return new Word(lineWords[i].Trim(wordSeparator[0]));
+                                            yield return new Symbol(wordSeparator);
                                             isAdded = true;
                                             break;
                                         }
@@ -65,7 +61,7 @@ namespace task2EPAMCourse.Service
                                     }
                                     else
                                     {
-                                        sentanceItems.Add(new SymbolSeparator(wordSeparator));
+                                        yield return new Symbol(wordSeparator);
                                         isAdded = true;
                                         break;
                                     }
@@ -73,26 +69,26 @@ namespace task2EPAMCourse.Service
                                 }
                                 else
                                 {
-                                    foreach (var sentenceSeparator in sentenceSeparator.GetSeparator())
+                                    foreach (var sentenceSeparator in _sentenceSeparator.GetSeparator())
                                     {
                                         if (lineWords[i].Contains(sentenceSeparator))
                                         {
-                                            foreach (var largeSentenceSeparator in largeSentenceSeparator.GetSeparator())
+                                            foreach (var largeSentenceSeparator in _largeSentenceSeparator.GetSeparator())
                                             {
                                                 if (lineWords[i].Contains(largeSentenceSeparator))
                                                 {
                                                     lineWords[i] = lineWords[i].Remove(lineWords[i].IndexOf(largeSentenceSeparator),
                                                         largeSentenceSeparator.Length);
-                                                    sentanceItems.Add(new Word(lineWords[i]));
-                                                    sentanceItems.Add(new SymbolSeparator(largeSentenceSeparator));
+                                                    yield return new Word(lineWords[i]);
+                                                    yield return new Symbol(largeSentenceSeparator);
                                                     isAdded = true;
                                                     break;
                                                 }
                                             }
                                             if (isAdded == false)
                                             {
-                                                sentanceItems.Add(new Word(lineWords[i].Trim(sentenceSeparator[0])));
-                                                sentanceItems.Add(new SymbolSeparator(sentenceSeparator));
+                                                yield return new Word(lineWords[i].Trim(sentenceSeparator[0]));
+                                                yield return new Symbol(sentenceSeparator);
                                                 isAdded = true;
                                             }
                                             break;
@@ -102,26 +98,25 @@ namespace task2EPAMCourse.Service
                             }
                             if (isAdded == false)
                             {
-                                sentanceItems.Add(new Word(lineWords[i]));
+                                yield return new Word(lineWords[i]);
                             }
                             isAdded = false;
                         }
                     }
                 }
             }
-            return sentanceItems;
         }
 
-        public void CreateSentence(IText text, IList<ISentenceItems> sentenceItems)
+        public void CreateSentence(IText text)
         {
+            var sentenceItems = ParseText().ToList();
             int lastWord = 0;
             for (int i = 0; i < sentenceItems.Count; i++)
             {
-                for (int j = 0; j <= sentenceSeparator.GetSeparator().Length - 1; j++)
+                for (int j = 0; j < _sentenceSeparator.GetSeparator().Length; j++)
                 {
-                    if (sentenceItems[i].GetValue().Contains(sentenceSeparator.GetSeparator()[j]))
+                    if (sentenceItems[i].GetValue().Contains(_sentenceSeparator.GetSeparator()[j]))
                     {
-
                         ISentence sentence = new Sentence();
                         for (int count = lastWord; count <= i; count++)
                         {
@@ -129,8 +124,7 @@ namespace task2EPAMCourse.Service
                         }
                         text.Add(sentence);
                         lastWord = i + 1;
-                        j = sentenceSeparator.GetSeparator().Length - 1;
-
+                        break;
                     }
                 }
             }

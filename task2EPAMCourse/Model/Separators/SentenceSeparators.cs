@@ -5,7 +5,7 @@ using System.Text;
 
 namespace task2EPAMCourse.Model.Separators
 {
-    class SentenceSeparators : Separator
+    internal class SentenceSeparators : Separator
     {
         private string[] _sentenceSeparators = new string[] { ".", "!", "?" };
 

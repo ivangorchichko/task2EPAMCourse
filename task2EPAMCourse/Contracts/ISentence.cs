@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using task2EPAMCourse.Model;
+﻿using System.Collections.Generic;
 
 namespace task2EPAMCourse.Contracts
 {

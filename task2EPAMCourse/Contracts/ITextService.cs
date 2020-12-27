@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace task2EPAMCourse.Contracts
 {
     public interface ITextService
-    {
-        bool TryParseEnum<T>(out T operation) where T : struct, IConvertible;
+    { 
+        IEnumerable<ISentence> OrderByWords(IText text);
 
-        IText OrderSentenceInText(IText text);
+        IEnumerable<ISentenceItems> GetWordsInQuestionSentence(IText text, int wordCount);
 
-        IList<ISentenceItems> GetWordsInQuestionSentence(IText text, int wordCount);
+        IEnumerable<string> CreateModelText(IEnumerable<ISentence> sentences);
 
-        IList<string> CreateModelText(IText text);
-
-        IText DeleteWordsFromText(IText text, int wordCount);
+        IEnumerable<ISentence> DeleteWordsFromText(IText text, int wordCount);
 
         ISentence ReplaceWordsOnSubstring(ISentence sentence, int wordCount, string substring);
-
-        void SaveObjectModel(IText text, IFileService fileService);
 
     }
 }

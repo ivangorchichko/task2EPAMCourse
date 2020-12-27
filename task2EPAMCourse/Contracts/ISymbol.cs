@@ -1,6 +1,6 @@
 ﻿namespace task2EPAMCourse.Contracts
 {
-    public interface IWord : ISentenceItems
+    interface ISymbol : ISentenceItems
     {
         
     }

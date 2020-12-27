@@ -4,7 +4,7 @@ using System.Text;
 
 namespace task2EPAMCourse.Model.Separators
 {
-    class DifficultSentenceSeparators : Separator
+    internal class DifficultSentenceSeparators : Separator
     {
         private string[] _largeSentenceSeparators = new string[] { "...", "?!", "!?" };
 

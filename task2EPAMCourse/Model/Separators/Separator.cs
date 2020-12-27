@@ -6,10 +6,9 @@ using task2EPAMCourse.Contracts;
 
 namespace task2EPAMCourse.Model.Separators
 {
-    abstract class Separator : ISeparator
+    public abstract class Separator : ISeparator
     {
         public abstract string[] GetSeparator();
-
     }
 }
 

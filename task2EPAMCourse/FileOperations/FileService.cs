@@ -1,15 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Newtonsoft.Json;
 using System.IO;
-using System.Text;
 using task2EPAMCourse.Contracts;
+using System.Configuration;
+using System.Text;
 
 namespace task2EPAMCourse.FileOperations
 {
     public class FileService : IFileService
     {
-        private const string _openFilePath = @"Data\ProgramText.txt";
-        private const string _saveFilePath = @"Data\SaveProgramText.txt";
+        private static readonly string _openFilePath = ConfigurationManager.AppSettings.Get("OpenFile");
+        private static readonly string _saveFilePath = ConfigurationManager.AppSettings.Get("SaveFile");
+        private readonly ITextService _textService;
+
+        public FileService()
+        {
+
+        }
+        
+        public FileService(ITextService textService)
+        {
+            _textService = textService;
+        }
 
         public StreamReader GetReader()
         {
@@ -17,16 +28,12 @@ namespace task2EPAMCourse.FileOperations
             return streamReader;
         }
 
-        public void SaveFile(IText text, ITextService textService)
+        public void SaveFile(IText text)
         {
-            using(StreamWriter streamWriter = new StreamWriter(_saveFilePath, false))
-            {
-                var saveText = textService.CreateModelText(text);
-                foreach (var senteces in saveText)
-                {
-                    streamWriter.Write(senteces + "\n");
-                }
-            }
+            var resultString = JsonConvert.SerializeObject(text);
+            using var filename = new FileStream(_saveFilePath, FileMode.Create);
+            using var writer = new StreamWriter(filename, Encoding.Default);
+            writer.Write(resultString);
         }
     }
 }
